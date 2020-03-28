@@ -20,5 +20,4 @@ o n 1
 o k 5
 n k 6
 k m 4
-a
-p
+a p

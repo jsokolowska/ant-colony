@@ -1,0 +1,26 @@
+c a 5
+d e 6
+b b 6
+c d 3
+a f 7
+c g 6
+g g 7
+g b 2
+b e 6
+g b 9
+c a 9
+a f 4
+c f 6
+d c 2
+c b 9
+a f 6
+e a 2
+e b 7
+c a 6
+f d 5
+e g 6
+e f 8
+c g 1
+f c 8
+e a 7
+c g
