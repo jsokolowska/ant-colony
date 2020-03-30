@@ -10,9 +10,20 @@ from sys import maxsize
 from src.graph_input import read_graph_txt
 
 
-def dijkstra(graph: Graph, start_point: Vertex, end_point: Vertex) -> []:
-    vertices_to_check = [[v, maxsize, None] for v in graph.vertices.values() if v != start_point]
-    vertices_to_check = [[start_point, 0, None]] + vertices_to_check
+def dijkstra(graph: Graph, start_point, end_point) -> []:
+    if type(start_point) is Vertex and type(end_point) is Vertex:
+        start_point = start_point.id
+        end_point = end_point.id
+    elif type(start_point) is str and type(end_point) is str:
+        pass
+    else:
+        print("ERROR: Wrong argument type.")
+        return None
+    if start_point not in graph.vertices or end_point not in graph.vertices:
+        print("ERROR: Point not found in graph.")
+        return None
+    vertices_to_check = [[v, maxsize, None] for v in graph.vertices.values() if v.id != start_point]
+    vertices_to_check = [[graph.vertices[start_point], 0, None]] + vertices_to_check
     vertices_checked = []
     name_to_index = {vertices_to_check[i][0].id: i for i in range(len(vertices_to_check))}
     while len(vertices_to_check) > 0:
@@ -40,17 +51,17 @@ def dijkstra(graph: Graph, start_point: Vertex, end_point: Vertex) -> []:
                         name_to_index[neigh] = i
                         break
     name_to_index = {vertices_checked[i][0].id: i for i in range(len(vertices_checked))}
-    curr_vertex = vertices_checked[name_to_index[end_point.id]]
+    curr_vertex = vertices_checked[name_to_index[end_point]]
     path = []
     while True:
         if curr_vertex[2] is None:
-            path = [start_point.id] + path
+            path = [start_point] + path
             break
         path = [curr_vertex[0].id] + path
         curr_vertex = vertices_checked[name_to_index[curr_vertex[2]]]
     return path
 
 
-# g = read_graph_txt()
-# p = dijkstra(g, g.vertices[g.start], g.vertices[g.end])
-# print(p)
+g = read_graph_txt()
+p = dijkstra(g, g.vertices[g.start], g.vertices[g.end])
+print(p)
