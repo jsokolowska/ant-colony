@@ -1,6 +1,7 @@
 """
     Created by: Rafal Uzarowicz
     Date of creation: 27.03.2020
+    Date of last modification: 28.03.2020
     Github: https://github.com/RafalUzarowicz
 """
 
@@ -9,7 +10,7 @@ from pathlib import Path
 import random
 
 
-def read_graph_from_file(fileName: str) -> Graph:
+def read_graph_from_file(fileName):
     try:
         with open(fileName) as graph_file:
             graph_temp = Graph()
@@ -31,20 +32,21 @@ def read_graph_from_file(fileName: str) -> Graph:
             return graph_temp
     except FileNotFoundError:
         print("ERROR: File ", fileName, " not found.")
+        return None
 
 
-def read_graph_txt(which_file="first") -> Graph:
+def read_graph_txt(which_file="first", keyword_1="graph", keyword_2="example"):
     data_folder = Path("./")
     list_of_txt = [x for x in data_folder.rglob('../*.txt') if x.is_file()]
     if which_file == "first":
         for file in list_of_txt:
-            if file.name.find("graph") >= 0 and file.name.find("example") >= 0:
+            if file.name.find(keyword_1) >= 0 and file.name.find(keyword_2) >= 0:
                 graph_file = str(file.parent) + "/" + file.name
                 return read_graph_from_file(graph_file)
     elif which_file == "random":
         file_lst = []
         for file in list_of_txt:
-            if file.name.find("graph") >= 0 and file.name.find("example") >= 0:
+            if file.name.find(keyword_1) >= 0 and file.name.find(keyword_2) >= 0:
                 file_lst.append(str(file.parent) + "/" + file.name)
         return read_graph_from_file(file_lst[random.randint(0, len(file_lst) - 1)])
     else:

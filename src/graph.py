@@ -27,7 +27,7 @@ class Graph:
         for name, vertex in self.vertices.items():
             string = string + name + " : "
             for neigh, weight in vertex.neighbours.items():
-                string = string + neigh + "-" + str(weight) + ","
+                string = string + neigh + "-" + str(weight) + ", "
             string += "\n"
         return string
 
