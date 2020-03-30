@@ -4,10 +4,10 @@ from src.vertex import Vertex
 class Graph:
     def __init__(self):
         self.vertices = {}
-        self.start = ""
-        self.end = ""
+        self.start = None
+        self.end = None
 
-    def add_edge(self, start_vertex, end_vertex, weight):
+    def add_edge(self, start_vertex: str, end_vertex, weight: str):
         if weight < 0:
             raise ValueError
         if start_vertex not in self.vertices:
@@ -19,11 +19,7 @@ class Graph:
         neighbour = {start_vertex: weight}
         self.vertices[end_vertex].add_neighbours(neighbour)
 
-    def add_vertex(self, name):
-        if self.start == "":
-            self.start = name
-        if self.start != name:
-            self.end = name
+    def add_vertex(self, name: str):
         self.vertices[name] = Vertex(name)
 
     def __str__(self):
@@ -35,5 +31,5 @@ class Graph:
             string += "\n"
         return string
 
-    def is_vertex(self, name):
+    def is_vertex(self, name: str):
         return name in self.vertices
