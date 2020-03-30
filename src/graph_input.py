@@ -51,6 +51,3 @@ def read_graph_txt(which_file="first"):
         return read_graph_from_file(file_lst[random.randint(0, len(file_lst) - 1)])
     else:
         print("ERROR: Wrong read mode.")
-
-# graph = read_graph_txt("random")
-# print(str(graph))
