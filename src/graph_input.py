@@ -1,7 +1,6 @@
 """
     Created by: Rafal Uzarowicz
     Date of creation: 27.03.2020
-    Date of last modification: 28.03.2020
     Github: https://github.com/RafalUzarowicz
 """
 
@@ -10,7 +9,7 @@ from pathlib import Path
 import random
 
 
-def read_graph_from_file(fileName):
+def read_graph_from_file(fileName: str) -> Graph:
     try:
         with open(fileName) as graph_file:
             graph_temp = Graph()
@@ -32,10 +31,9 @@ def read_graph_from_file(fileName):
             return graph_temp
     except FileNotFoundError:
         print("ERROR: File ", fileName, " not found.")
-        return None
 
 
-def read_graph_txt(which_file="first"):
+def read_graph_txt(which_file="first") -> Graph:
     data_folder = Path("./")
     list_of_txt = [x for x in data_folder.rglob('../*.txt') if x.is_file()]
     if which_file == "first":

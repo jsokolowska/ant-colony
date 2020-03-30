@@ -1,3 +1,9 @@
+"""
+    Created by: Rafal Uzarowicz
+    Date of creation: 27.03.2020
+    Github: https://github.com/RafalUzarowicz
+"""
+
 import unittest
 from src.graph_input import read_graph_from_file
 from src.graph_input import read_graph_txt
