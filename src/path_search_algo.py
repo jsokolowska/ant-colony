@@ -18,10 +18,10 @@ def dijkstra(graph: Graph, start_point, end_point) -> []:
         pass
     else:
         print("ERROR: Wrong argument type.")
-        return None
+        raise TypeError
     if start_point not in graph.vertices or end_point not in graph.vertices:
         print("ERROR: Point not found in graph.")
-        return None
+        raise ValueError
     vertices_to_check = [[v, maxsize, None] for v in graph.vertices.values() if v.id != start_point]
     vertices_to_check = [[graph.vertices[start_point], 0, None]] + vertices_to_check
     vertices_checked = []
