@@ -8,15 +8,16 @@ class Graph:
         self.end = None
 
     def add_edge(self, start_vertex: str, end_vertex, weight: str):
+        pheromone = 0
         if weight < 0:
             raise ValueError
         if start_vertex not in self.vertices:
             self.add_vertex(start_vertex)
         if end_vertex not in self.vertices:
             self.add_vertex(end_vertex)
-        neighbour = {end_vertex: weight}
+        neighbour = {end_vertex: {"weight": weight, "pheromone": pheromone}}
         self.vertices[start_vertex].add_neighbours(neighbour)
-        neighbour = {start_vertex: weight}
+        neighbour = {start_vertex: {"weight": weight, "pheromone": pheromone}}
         self.vertices[end_vertex].add_neighbours(neighbour)
 
     def add_vertex(self, name: str):

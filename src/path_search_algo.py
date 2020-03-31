@@ -37,9 +37,9 @@ def dijkstra(graph: Graph, start_point, end_point) -> []:
             if name_to_index[neigh] < 0:
                 continue
             if vertices_to_check[name_to_index[neigh]][1] > current_vertex[1] + \
-                    current_vertex[0].neighbours[neigh]:
+                    current_vertex[0].neighbours[neigh]["weight"]:
                 vertices_to_check[name_to_index[neigh]][1] = current_vertex[1] + \
-                                                             current_vertex[0].neighbours[neigh]
+                                                             current_vertex[0].neighbours[neigh]["weight"]
                 vertices_to_check[name_to_index[neigh]][2] = current_vertex[0].id
                 for i in range(len(vertices_to_check)):
                     if name_to_index[neigh] == i:
