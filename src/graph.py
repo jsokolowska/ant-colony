@@ -7,8 +7,7 @@ class Graph:
         self.start = None
         self.end = None
 
-    def add_edge(self, start_vertex: str, end_vertex, weight: str):
-        pheromone = 0
+    def add_edge(self, start_vertex: str, end_vertex: str, weight: int, pheromone=0.001):
         if weight < 0:
             raise ValueError
         if start_vertex not in self.vertices:

@@ -7,7 +7,6 @@
 from src.graph import Graph
 from src.vertex import Vertex
 from sys import maxsize
-from src.graph_input import read_graph_txt
 
 
 def dijkstra(graph: Graph, start_point, end_point) -> []:
@@ -60,8 +59,3 @@ def dijkstra(graph: Graph, start_point, end_point) -> []:
         path = [curr_vertex[0].id] + path
         curr_vertex = vertices_checked[name_to_index[curr_vertex[2]]]
     return path
-
-
-g = read_graph_txt()
-p = dijkstra(g, g.vertices[g.start], g.vertices[g.end])
-print(p)

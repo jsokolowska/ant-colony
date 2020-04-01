@@ -7,6 +7,6 @@ class Vertex:
         print("Vertex: ", name, " added. Updated vertex count: " + str(Vertex.instances_created))
         self.neighbours = {}
 
-    def add_neighbours(self, neighbours: {str: int}):
+    def add_neighbours(self, neighbours: {str: {str: object}}):
         if self.id not in neighbours:
             self.neighbours.update(neighbours)
