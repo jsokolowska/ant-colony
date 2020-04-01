@@ -54,13 +54,18 @@ def generate_solutions(anthill: Anthill, graph: Graph) -> Anthill:
             if curr_vertex.id == graph.end:
                 ant.has_found = True
                 break
+    string = ""
     for ant in anthill:
-        print(ant.has_found, "\t", ant.distance_traveled, "\t", ant.path)
+        if ant.has_found:
+            string += "1"
+        else:
+            string += "0"
+    print(string)
     return anthill
 
 
-# anth = Anthill(10)
-# g = read_graph_from_file("../graph_example.txt")
-# generate_solutions(anth, g)
-#
-# pick_vertex(g.vertices[g.start].neighbours)
+anth = Anthill(100)
+g = read_graph_from_file("../graph_example.txt")
+generate_solutions(anth, g)
+
+pick_vertex(g.vertices[g.start].neighbours)
