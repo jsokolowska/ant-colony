@@ -17,8 +17,9 @@ class TestPathSearchAlgorithms(unittest.TestCase):
         graph.add_edge("A", "C", 1)
         graph.add_edge("B", "D", 9)
         graph.add_edge("C", "D", 1)
-        path = dijkstra(graph,"A", "D")
+        path, distance = dijkstra(graph,"A", "D")
         self.assertListEqual(path, ["A", "C", "D"])
+        self.assertEqual(distance, 2)
         self.assertRaises(ValueError, dijkstra, graph, "A", "X")
         self.assertRaises(TypeError, dijkstra, "A", 7)
 

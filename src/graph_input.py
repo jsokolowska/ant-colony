@@ -1,7 +1,6 @@
 """
     Created by: Rafal Uzarowicz
     Date of creation: 27.03.2020
-    Date of last modification: 28.03.2020
     Github: https://github.com/RafalUzarowicz
 """
 
@@ -10,28 +9,33 @@ from pathlib import Path
 import random
 
 
-def read_graph_from_file(fileName):
+def read_graph_from_file(file_name):
     try:
-        with open(fileName) as graph_file:
+        with open(file_name) as graph_file:
             graph_temp = Graph()
             for line in graph_file.readlines():
                 lst = line.split()
                 if len(lst) == 2:
-                    start = lst[0]
-                    if graph_temp.is_vertex(start):
-                        graph_temp.start = start
-                    end = lst[1]
-                    if graph_temp.is_vertex(end):
-                        graph_temp.end = end
-                elif len(lst) > 2:
+                    if graph_temp.is_vertex(lst[0]):
+                        graph_temp.start = lst[0]
+                    if graph_temp.is_vertex(lst[1]):
+                        graph_temp.end = lst[1]
+                elif len(lst) == 3:
                     vertex_1 = lst[0]
                     vertex_2 = lst[1]
                     edge_weight = int(lst[2])
                     if edge_weight > 0:
                         graph_temp.add_edge(vertex_1.strip(), vertex_2.strip(), edge_weight)
+                else:
+                    print("ERROR: Wrong file format.")
+                    return Graph()
+            if graph_temp.start is None:
+                graph_temp.start = graph_temp.vertices[list(graph_temp.vertices.keys())[0]]
+            if graph_temp.end is None:
+                graph_temp.end = graph_temp.vertices[list(graph_temp.vertices.keys())[-1]]
             return graph_temp
     except FileNotFoundError:
-        print("ERROR: File ", fileName, " not found.")
+        print("ERROR: File ", file_name, " not found.")
         return None
 
 

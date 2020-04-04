@@ -7,65 +7,51 @@ from src.anthill import Anthill
 from src.graph import Graph
 from src.vertex import Vertex
 from random import uniform
-from src.graph_input import read_graph_from_file
 
 
-def pick_vertex(neighbours: {}):
-    alpha = 1
-    beta = 1
-    tau = [[k, (v["weight"] ** beta) * (v["pheromone"] ** alpha)] for k, v in neighbours.items()]
+def pick_vertex(vertex: Vertex, prev_vertex: Vertex):
+    alpha_param = 1
+    beta_param = 1
+    tau = [[k, ((1 / v["weight"]) ** beta_param) * (v["pheromone"] ** alpha_param)] for k, v in
+           vertex.neighbours.items() if k != prev_vertex.id]
+    if not len(tau):
+        if vertex.id != prev_vertex.id:
+            return prev_vertex.id, vertex.id
+        else:
+            return None, None
     total = 0
     for val in tau:
         total += val[1]
+    if total == 0.0:
+        tau = [[k, (1 / v["weight"])] for k, v in vertex.neighbours.items() if k != prev_vertex.id]
+        for val in tau:
+            total += val[1]
     for i in range(len(tau)):
         tau[i][1] /= total
-    probability = []
     curr = 1.0
-    for i in range(len(tau) - 1):
-        curr -= tau[i][1]
-        probability.append(curr)
-    probability.append(0.0)
-    rand_number = uniform(0, 1)
     i = 0
-    while i < len(probability):
-        if rand_number >= probability[i]:
+    rand_number = uniform(0, 1)
+    while i < len(tau) - 1:
+        curr -= tau[i][1]
+        if rand_number >= curr:
             break
         i += 1
-    return tau[i][0]
+    return tau[i][0], vertex.id
 
 
 def generate_solutions(anthill: Anthill, graph: Graph) -> Anthill:
-    vertex_lst = list(graph.vertices.keys())
-    vertex_lst.remove(graph.start)
+    anthill.reset_ants()
     for ant in anthill:
         ant.path.append(graph.start)
-        unvisited_vertex_lst = vertex_lst.copy()
-        curr_vertex = graph.vertices[graph.start]
+        prev_vertex = curr_vertex = graph.start
         while True:
-            prev_vertex = curr_vertex
-            available_vertices = {k: v for k, v in curr_vertex.neighbours.items() if k in unvisited_vertex_lst}
-            if not len(available_vertices):
+            curr_vertex, prev_vertex = pick_vertex(graph.vertices[curr_vertex], graph.vertices[prev_vertex])
+            if curr_vertex is None:
+                ant.has_found = False
                 break
-            chosen_vertex = pick_vertex(available_vertices)
-            unvisited_vertex_lst.remove(chosen_vertex)
-            curr_vertex = graph.vertices[chosen_vertex]
-            ant.path.append(curr_vertex.id)
-            ant.distance_traveled += prev_vertex.neighbours[chosen_vertex]["weight"]
-            if curr_vertex.id == graph.end:
+            ant.path.append(curr_vertex)
+            ant.distance_traveled += graph.vertices[prev_vertex].neighbours[curr_vertex]["weight"]
+            if curr_vertex == graph.end:
                 ant.has_found = True
                 break
-    string = ""
-    for ant in anthill:
-        if ant.has_found:
-            string += "1"
-        else:
-            string += "0"
-    print(string)
     return anthill
-
-
-anth = Anthill(100)
-g = read_graph_from_file("../graph_example.txt")
-generate_solutions(anth, g)
-
-pick_vertex(g.vertices[g.start].neighbours)

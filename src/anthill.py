@@ -16,9 +16,16 @@ class Anthill:
         if ants_num <= 0:
             raise ValueError
         self.ants = [self.Ant() for i in range(ants_num)]
+        self.ants_num = ants_num
 
     def __iter__(self):
         return iter(self.ants)
 
     def __len__(self):
         return len(self.ants)
+
+    def reset_ants(self):
+        for ant in self.ants:
+            ant.has_found = False
+            ant.path = []
+            ant.distance_traveled = 0

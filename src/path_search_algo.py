@@ -52,10 +52,15 @@ def dijkstra(graph: Graph, start_point, end_point) -> []:
     name_to_index = {vertices_checked[i][0].id: i for i in range(len(vertices_checked))}
     curr_vertex = vertices_checked[name_to_index[end_point]]
     path = []
+    distance = 0
     while True:
         if curr_vertex[2] is None:
             path = [start_point] + path
             break
         path = [curr_vertex[0].id] + path
         curr_vertex = vertices_checked[name_to_index[curr_vertex[2]]]
-    return path
+    for i in range(len(path)-1):
+        prev_vertex = path[i]
+        next_vertex = path[i + 1]
+        distance += graph.vertices[prev_vertex].neighbours[next_vertex]["weight"]
+    return path, distance
