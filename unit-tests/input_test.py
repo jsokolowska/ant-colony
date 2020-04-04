@@ -25,7 +25,7 @@ class TestInputFunctions(unittest.TestCase):
             self.assertDictEqual(graph1.vertices[lst[i]].neighbours, graph2.vertices[lst[i]].neighbours)
 
     def test_read_from_file(self):
-        graph1 = read_graph_from_file("../testGraph.txt")
+        graph1 = read_graph_from_file("../test_graph.txt")
         graph2 = Graph()
         graph2.add_edge("A", "B", 1)
         graph2.add_edge("A", "C", 1)
