@@ -48,7 +48,7 @@ def generate_input(vertex_num, density, file_name="graph_example_auto.txt"):
         line = " ".join([edge[0], edge[1], edge_weight])
         lines.append(line)
 
-    PATH = "../graph-examples/"
+    PATH = "../graphs/"
     file_name = PATH + file_name
     with open(file_name, 'w') as file:
         start_vertex = chr(ord('a') + random.randrange(0, vertex_num - 1))

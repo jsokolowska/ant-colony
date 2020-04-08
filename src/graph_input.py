@@ -40,7 +40,7 @@ def read_graph_from_file(file_name):
 
 
 def read_graph_txt(which_file="first", keyword_1="graph", keyword_2="example"):
-    data_folder = Path("./")
+    data_folder = Path("../graphs/")
     list_of_txt = [x for x in data_folder.rglob('../*.txt') if x.is_file()]
     if which_file == "first":
         for file in list_of_txt:
