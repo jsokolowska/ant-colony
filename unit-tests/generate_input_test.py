@@ -6,7 +6,7 @@ from src.generate_input_graphs import generate_input
 class GenerateInputTest(unittest.TestCase):
     def test_generate_input(self):
         filename = "test_graph_auto.txt"
-        filepath = "../graph-examples/" + filename
+        filepath = "../graphs/" + filename
         vertices = 20
         density = 0.7
         expected_edges = density * (vertices * (vertices - 1)) / 2
