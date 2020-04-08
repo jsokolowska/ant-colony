@@ -49,9 +49,12 @@ def generate_solutions(anthill: Anthill, graph: Graph) -> Anthill:
             if curr_vertex is None:
                 ant.has_found = False
                 break
+                break
             ant.path.append(curr_vertex)
             ant.distance_traveled += graph.vertices[prev_vertex].neighbours[curr_vertex]["weight"]
             if curr_vertex == graph.end:
                 ant.has_found = True
                 break
+    for ant in anthill:
+        print(ant.has_found, "\t", ant.distance_traveled, "\t", ant.path)
     return anthill

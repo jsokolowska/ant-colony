@@ -64,3 +64,38 @@ def dijkstra(graph: Graph, start_point, end_point) -> []:
         next_vertex = path[i + 1]
         distance += graph.vertices[prev_vertex].neighbours[next_vertex]["weight"]
     return path, distance
+
+
+def brute_force(graph: Graph) -> ([], int):
+    if type(graph.start) is not Vertex or type(graph.end) is not Vertex:
+        raise TypeError('Graph start and end id\'s are not of class Vertex')
+    else:
+        paths = bf_recursion(graph, [], graph.start.id, 0, [])
+        return choose_shortest_path(paths)
+
+
+def bf_recursion(graph: Graph, visited: [], current_id, length, paths: []) -> []:
+    if current_id == graph.end.id:
+        visited.append(current_id)
+        paths.append((visited, length))
+    else:
+        visited.append(current_id)
+        for node in graph.vertices[current_id].neighbours:
+            if node not in visited:
+                length_copy = update_path_length(graph, current_id, node, length)
+                bf_recursion(graph, visited[:], node, length_copy, paths)
+    return paths
+
+
+def update_path_length(graph: Graph, vertex1_id, vertex2_id, length):
+    return length + graph.vertices[vertex1_id].neighbours[vertex2_id]["weight"]
+
+
+def choose_shortest_path(paths) -> ([], int):
+    if len(paths) == 0:
+        return None
+    shortest = paths[0]
+    for path in paths:
+        if path[1] < shortest[1]:
+            shortest = path
+    return shortest
