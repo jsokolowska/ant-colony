@@ -1,4 +1,4 @@
-src/generate_input_graphs.py (A)"""
+"""
     Created by: Joanna Sokołowska
     Date of creation: 30.03.2020
     Date of last modification: 02.04.2020
