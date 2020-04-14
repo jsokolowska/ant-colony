@@ -29,3 +29,21 @@ class Anthill:
             ant.has_found = False
             ant.path = []
             ant.distance_traveled = 0
+
+    def get_best_ant(self):
+        if not len(self.ants):
+            return None
+        best_ant = self.ants[0]
+        for ant in self.ants:
+            if best_ant.distance_traveled > ant.distance_traveled:
+                best_ant = ant
+        return best_ant
+
+    def get_worst_ant(self):
+        if not len(self.ants):
+            return None
+        worst_ant = self.ants[0]
+        for ant in self.ants:
+            if worst_ant.distance_traveled < ant.distance_traveled:
+                worst_ant = ant
+        return worst_ant
