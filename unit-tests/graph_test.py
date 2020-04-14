@@ -2,7 +2,7 @@ import unittest
 from src.graph import Graph
 
 
-class MyTestCase(unittest.TestCase):
+class graphTest(unittest.TestCase):
     def test_add_edge(self):
         graph = Graph()
         graph.add_vertex("A")

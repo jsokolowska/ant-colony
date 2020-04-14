@@ -35,6 +35,6 @@ def evaporate_pheromones(graph: Graph, ro_param=0.5):
 def single_pheromone_update(ant, graph: Graph, q_param):
     if ant.has_found:
         new_pheromone = q_param / ant.distance_traveled
-        for i in range(ant.path-1):
+        for i in range(len(ant.path)-1):
             graph.vertices[ant.path[i]].neighbours[ant.path[i+1]]["pheromone"] += new_pheromone
             graph.vertices[ant.path[i+1]].neighbours[ant.path[i]]["pheromone"] += new_pheromone
