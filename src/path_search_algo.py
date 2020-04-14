@@ -67,15 +67,15 @@ def dijkstra(graph: Graph, start_point, end_point) -> []:
 
 
 def brute_force(graph: Graph) -> ([], int):
-    if type(graph.start) is not Vertex or type(graph.end) is not Vertex:
-        raise TypeError('Graph start and end id\'s are not of class Vertex')
+    if type(graph.start) is not str or type(graph.end) is not str:
+        raise TypeError('Graph start and end must be strings')
     else:
-        paths = bf_recursion(graph, [], graph.start.id, 0, [])
+        paths = bf_recursion(graph, [], graph.start, 0, [])
         return choose_shortest_path(paths)
 
 
 def bf_recursion(graph: Graph, visited: [], current_id, length, paths: []) -> []:
-    if current_id == graph.end.id:
+    if current_id == graph.end:
         visited.append(current_id)
         paths.append((visited, length))
     else:

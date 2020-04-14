@@ -29,8 +29,8 @@ class TestPathSearchAlgorithms(unittest.TestCase):
         graph1.add_edge("A", "C", 1)
         graph1.add_edge("B", "D", 9)
         graph1.add_edge("C", "D", 1)
-        graph1.set_end_vertex("D")
-        graph1.set_start_vertex("A")
+        graph1.end = "D"
+        graph1.start = "A"
         path = brute_force(graph1)
         self.assertListEqual(path[0], ["A", "C", "D"])
         self.assertEqual(path[1], 2)

@@ -33,13 +33,5 @@ class Graph:
             string += "\n"
         return string
 
-    def set_start_vertex(self, start_id):
-        if self.is_vertex(start_id):
-            self.start = self.vertices[start_id]
-
-    def set_end_vertex(self, end_id):
-        if self.is_vertex(end_id):
-            self.end = self.vertices[end_id]
-
     def is_vertex(self, name: str):
         return name in self.vertices
