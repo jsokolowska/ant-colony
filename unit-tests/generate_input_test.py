@@ -5,7 +5,7 @@ from src.generate_input import generate_input
 
 class GenerateInputTest(unittest.TestCase):
     def test_generate_input(self):
-        filename = "test_graph_auto2.txt"
+        filename = "test_graph_auto.txt"
         filepath = "../graphs/" + filename
         vertices = 20
         density = 0.7
