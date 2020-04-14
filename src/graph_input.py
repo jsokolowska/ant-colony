@@ -40,8 +40,8 @@ def read_graph_from_file(file_name):
 
 
 def read_graph_txt(which_file="first", keyword_1="graph", keyword_2="example"):
-    data_folder = Path("./")
-    list_of_txt = [x for x in data_folder.rglob('../*.txt') if x.is_file()]
+    data_folder = Path("../")
+    list_of_txt = [x for x in data_folder.rglob('*.txt') if x.is_file()]
     if which_file == "first":
         for file in list_of_txt:
             if file.name.find(keyword_1) >= 0 and file.name.find(keyword_2) >= 0:
@@ -55,3 +55,4 @@ def read_graph_txt(which_file="first", keyword_1="graph", keyword_2="example"):
         return read_graph_from_file(file_lst[random.randint(0, len(file_lst) - 1)])
     else:
         print("ERROR: Wrong read mode.")
+

@@ -13,13 +13,15 @@ from src.graph import Graph
 class TestInputFunctions(unittest.TestCase):
 
     def test_read_txt(self):
-        graph1 = read_graph_txt(keyword_1="test", keyword_2="Graph")
+        graph1 = read_graph_txt(keyword_1="test", keyword_2="graph")
         graph2 = Graph()
         graph2.add_edge("A", "B", 1)
         graph2.add_edge("A", "C", 1)
         graph2.add_edge("B", "D", 9)
         graph2.add_edge("C", "D", 1)
         lst = ["A", "B", "C", "D"]
+        graph2.set_start_vertex("A")
+        graph2.set_end_vertex("D")
         self.assertListEqual(list(graph1.vertices.keys()), list(graph2.vertices.keys()))
         for i in range(4):
             self.assertDictEqual(graph1.vertices[lst[i]].neighbours, graph2.vertices[lst[i]].neighbours)

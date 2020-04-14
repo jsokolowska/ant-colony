@@ -11,7 +11,6 @@ class MyTestCase(unittest.TestCase):
         self.assertDictEqual(graph.vertices["A"].neighbours, {"B": {'weight': 40, 'pheromone': 0.001}})
         self.assertDictEqual(graph.vertices["B"].neighbours, {"A": {'weight': 40, 'pheromone': 0.001}})
         self.assertRaises(ValueError, graph.add_edge, "A", "B", -40)
-        # self.assertRaises(IndexError, graph.add_edge, 20, 4, 10)
 
 
 if __name__ == '__main__':
