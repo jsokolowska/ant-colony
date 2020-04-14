@@ -54,6 +54,10 @@ class acoTest(unittest.TestCase):
         self.assertNotEqual(graph.vertices["A"].neighbours["B"]["pheromone"], 0.0)
         self.assertNotEqual(graph.vertices["B"].neighbours["A"]["pheromone"], 0.0)
 
+        self.assertRaises(TypeError, local_search, None, graph, 0.5, 0.5, 0.5)
+        self.assertRaises(ValueError, local_search, None, graph, 0.5, 0.5, diff_percent=-0.5)
+        self.assertRaises(ValueError, local_search, None, graph, 0.5, 0.5, diff_percent=2.5)
+
 
 if __name__ == '__main__':
     unittest.main()
