@@ -20,8 +20,8 @@ class TestInputFunctions(unittest.TestCase):
         graph2.add_edge("B", "D", 9)
         graph2.add_edge("C", "D", 1)
         lst = ["A", "B", "C", "D"]
-        graph2.set_start_vertex("A")
-        graph2.set_end_vertex("D")
+        graph2.start = "A"
+        graph2.start = "D"
         self.assertListEqual(list(graph1.vertices.keys()), list(graph2.vertices.keys()))
         for i in range(4):
             self.assertDictEqual(graph1.vertices[lst[i]].neighbours, graph2.vertices[lst[i]].neighbours)
