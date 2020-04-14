@@ -5,7 +5,7 @@
 """
 
 import unittest
-from src.path_search_algo import dijkstra, brute_force
+from src.path_search_algo import dijkstra, brute_force, choose_shortest_path
 from src.graph import Graph
 
 
@@ -34,6 +34,17 @@ class TestPathSearchAlgorithms(unittest.TestCase):
         path = brute_force(graph1)
         self.assertListEqual(path[0], ["A", "C", "D"])
         self.assertEqual(path[1], 2)
+
+    def test_choose_shortest_path(self):
+        self.assertIsNone(choose_shortest_path(None))
+
+        paths = [([], 1), ([], 2), ([], 8)]
+        result = choose_shortest_path(paths)
+        self.assertEqual(result[1], 1)
+
+        paths.append(([], 0.5))
+        result = choose_shortest_path(paths)
+        self.assertEqual(result[1], 0.5)
 
 
 if __name__ == '__main__':

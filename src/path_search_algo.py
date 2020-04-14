@@ -91,8 +91,8 @@ def update_path_length(graph: Graph, vertex1_id, vertex2_id, length):
     return length + graph.vertices[vertex1_id].neighbours[vertex2_id]["weight"]
 
 
-def choose_shortest_path(paths) -> ([], int):
-    if len(paths) == 0:
+def choose_shortest_path(paths: [([], int)]) -> ([], int):
+    if paths is None or len(paths) == 0:
         return None
     shortest = paths[0]
     for path in paths:

@@ -1,7 +1,7 @@
 """
     Created by: Joanna Sokołowska
     Date of creation: 30.03.2020
-    Date of last modification: 02.04.2020
+    Date of last modification: 14.04.2020
     Github: https://github.com/jsokolowska
 """
 
@@ -11,7 +11,7 @@ from random import randrange
 
 def generate_input(vertex_num, probability, file_name="graph_example_auto.txt"):  # currently handling up ro 23 vertices
     if vertex_num < 2 or probability < 0 or probability > 1:
-        raise ValueError('Density should be between 0 and 1, while vertex_num must be at least 2')
+        raise ValueError('Probability should be between 0 and 1, while vertex_num must be at least 2')
     all_vertices = [chr(i) for i in range(ord('a'), ord('a') + vertex_num)]
     all_edges = [(all_vertices[a], all_vertices[b]) for a in range(vertex_num) for b in range(a + 1, vertex_num)]
 
