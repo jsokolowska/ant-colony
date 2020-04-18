@@ -16,11 +16,9 @@ def dijkstra(graph: Graph, start_point, end_point) -> []:
     elif type(start_point) is str and type(end_point) is str:
         pass
     else:
-        print("ERROR: Wrong argument type.")
-        raise TypeError
+        raise TypeError("ERROR: Wrong argument type.")
     if start_point not in graph.vertices or end_point not in graph.vertices:
-        print("ERROR: Point not found in graph.")
-        raise ValueError
+        raise ValueError("ERROR: Point not found in graph.")
     vertices_to_check = [[v, maxsize, None] for v in graph.vertices.values() if v.id != start_point]
     vertices_to_check = [[graph.vertices[start_point], 0, None]] + vertices_to_check
     vertices_checked = []

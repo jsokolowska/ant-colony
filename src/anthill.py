@@ -24,6 +24,12 @@ class Anthill:
     def __len__(self):
         return len(self.ants)
 
+    def __str__(self):
+        string = ""
+        for ant in self.ants:
+            string += str(ant.distance_traveled) + ":" + str(ant.path) + "\n"
+        return string
+
     def reset_ants(self):
         for ant in self.ants:
             ant.has_found = False

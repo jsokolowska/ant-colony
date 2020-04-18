@@ -8,18 +8,16 @@ from src.graph import Graph
 from src.anthill import Anthill
 
 
-def pheromone_update(anthill: Anthill, graph: Graph):
-    q_param = 1
-    ro_param = 1
+def pheromone_update(anthill: Anthill, graph: Graph, q_param=1, ro_param=0.5):
+    if type(anthill) is not Anthill or type(graph) is not Graph:
+        raise TypeError("Wrong argument type.")
+    if len(graph.vertices) <= 0 or graph.start is None or graph.end is None:
+        raise ValueError("Wrong argument value.")
     for name in graph.vertices:
         for neigh in graph.vertices[name].neighbours:
             graph.vertices[name].neighbours[neigh]["pheromone"] *= 1 - ro_param
     for ant in anthill:
-        if ant.has_found:
-            for i in range(len(ant.path) - 1):
-                pheromone_new = q_param / ant.distance_traveled
-                graph.vertices[ant.path[i]].neighbours[ant.path[i + 1]]["pheromone"] += pheromone_new
-                graph.vertices[ant.path[i + 1]].neighbours[ant.path[i]]["pheromone"] += pheromone_new
+        single_pheromone_update(ant, graph, q_param)
 
 
 def evaporate_pheromones(graph: Graph, ro_param=0.5):
@@ -35,6 +33,6 @@ def evaporate_pheromones(graph: Graph, ro_param=0.5):
 def single_pheromone_update(ant, graph: Graph, q_param):
     if ant.has_found:
         new_pheromone = q_param / ant.distance_traveled
-        for i in range(len(ant.path)-1):
-            graph.vertices[ant.path[i]].neighbours[ant.path[i+1]]["pheromone"] += new_pheromone
-            graph.vertices[ant.path[i+1]].neighbours[ant.path[i]]["pheromone"] += new_pheromone
+        for i in range(len(ant.path) - 1):
+            graph.vertices[ant.path[i]].neighbours[ant.path[i + 1]]["pheromone"] += new_pheromone
+            graph.vertices[ant.path[i + 1]].neighbours[ant.path[i]]["pheromone"] += new_pheromone

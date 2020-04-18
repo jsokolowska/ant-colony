@@ -2,7 +2,7 @@ import unittest
 from src.anthill import Anthill
 
 
-class anthillTest(unittest.TestCase):
+class AnthillTest(unittest.TestCase):
     def test_get_best_ant(self):
         anthill = Anthill(10)
         for i in range(10):
