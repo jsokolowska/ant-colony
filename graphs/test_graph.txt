@@ -1,5 +1,6 @@
 A B 1
 A C 1
-B D 9
+B D 3
 C D 1
+A D 8
 A D

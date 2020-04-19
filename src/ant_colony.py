@@ -32,15 +32,15 @@ class AntColony:
             raise ValueError("Number of iterations must be greater than 0")
 
         for i in range(iterations):
-            self.anthill = self.generate_solutions(self.anthill)
+            self.generate_solutions()
             if self.ls_flag:
                 self.local_search()
             else:
                 self.pheromone_update()
 
-    def generate_solutions(self, anthill) -> Anthill:
-        anthill.reset_ants()
-        for ant in anthill.ants:
+    def generate_solutions(self):
+        self.anthill.reset_ants()
+        for ant in self.anthill.ants:
             ant.path.append(self.graph.start)
             prev_vertex = curr_vertex = self.graph.start
             while True:
@@ -54,7 +54,6 @@ class AntColony:
                 if curr_vertex == self.graph.end:
                     ant.has_found = True
                     break
-        return anthill
 
     def pick_vertex(self, vertex: Vertex, prev_vert: Vertex):
         tau = [[k, ((1 / v["weight"]) ** self.beta_param) * (v["pheromone"] ** self.alpha_param)] for k, v in

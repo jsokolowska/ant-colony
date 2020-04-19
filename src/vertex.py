@@ -1,5 +1,4 @@
 class Vertex:
-
     def __init__(self, name: str):
         self.id = name
         self.neighbours = {}
