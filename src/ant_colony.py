@@ -23,7 +23,7 @@ class AntColony:
         self.ls_flag = ls_flag
         self.diff_percentage = diff_percentage
 
-    def run(self, iterations: int = 20):
+    def run(self, iterations: int = 20) -> ([],int):
         if type(self.anthill) is not Anthill or type(self.graph) is not Graph:
             raise TypeError("Graph or anthill have wrong types.")
         if len(self.graph.vertices) <= 0 or self.graph.start is None or self.graph.end is None:
@@ -37,6 +37,10 @@ class AntColony:
                 self.local_search()
             else:
                 self.pheromone_update()
+
+        best_ant = self.anthill.get_best_ant()
+        path = (best_ant.path, best_ant.distance_traveled)
+        return path
 
     def generate_solutions(self):
         self.anthill.reset_ants()
