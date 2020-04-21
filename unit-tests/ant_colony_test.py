@@ -2,14 +2,14 @@ import unittest
 from src.graph import Graph
 from src.graph_input import read_graph_from_file
 from src.anthill import Anthill
-from src.ant_colony import AntColony
+from src.ant_colony_optimization import AntColonyOptimization
 
 
 class AntColonyTest(unittest.TestCase):
     def setUp(self) -> None:
         graph = Graph()
         anthill = Anthill(1)
-        self.ant_colony = AntColony(anthill=anthill, graph=graph)
+        self.ant_colony = AntColonyOptimization(anthill=anthill, graph=graph)
         self.reset_anthill()
         self.reset_graph()
 

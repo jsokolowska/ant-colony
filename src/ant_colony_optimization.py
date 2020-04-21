@@ -5,7 +5,7 @@ from src.vertex import Vertex
 from random import uniform
 
 
-class AntColony:
+class AntColonyOptimization:
     def __init__(self, *, anthill: Anthill = None, graph: Graph = None, q_param=1, ro_param=0.5, alpha_param=1,
                  beta_param=1, ants_num=50, ls_flag=True, diff_percentage=0.5):
         if type(graph) is not Graph:
