@@ -1,8 +1,9 @@
 from src.graph import Graph
 from src.anthill import Anthill
-from src.graph_input import read_graph_txt
+from src.graph_input import read_graph_txt, read_graph_from_file
 from src.vertex import Vertex
 from random import uniform
+from src.path_search_algo import dijkstra
 
 
 class AntColonyOptimization:
@@ -23,7 +24,7 @@ class AntColonyOptimization:
         self.ls_flag = ls_flag
         self.diff_percentage = diff_percentage
 
-    def run(self, iterations: int = 20) -> ([],int):
+    def run(self, iterations: int = 20) -> ([], int):
         if type(self.anthill) is not Anthill or type(self.graph) is not Graph:
             raise TypeError("Graph or anthill have wrong types.")
         if len(self.graph.vertices) <= 0 or self.graph.start is None or self.graph.end is None:
@@ -37,6 +38,11 @@ class AntColonyOptimization:
                 self.local_search()
             else:
                 self.pheromone_update()
+            if i % 10 == 0:
+                print("Iteration nr: ", i)
+            best_ant = self.anthill.get_best_ant()
+            path = (best_ant.path, best_ant.distance_traveled)
+            print("Iteracja: ", i, " : ", path[1])
 
         best_ant = self.anthill.get_best_ant()
         path = (best_ant.path, best_ant.distance_traveled)
@@ -114,4 +120,12 @@ class AntColonyOptimization:
             for ant in self.anthill.ants:
                 if ant.distance_traveled <= len_threshold:
                     self.single_pheromone_update(ant)
+
+
+graph = read_graph_from_file("../graphs/graph_example_2.txt")
+aco = AntColonyOptimization(graph=graph, ants_num=5, ls_flag=False)
+result = aco.run(40)
+d_res = dijkstra(graph, graph.start, graph.end)
+print(result[0], result[1])
+print("dijkstra: ", d_res)
 
