@@ -1,10 +1,7 @@
 from src.graph import Graph
 from src.anthill import Anthill
-from src.graph_input import read_graph_txt, read_graph_from_file
-from src.vertex import Vertex
+from src.graph_input import read_graph_txt
 from random import uniform
-from src.path_search_algo import dijkstra
-from pathlib import Path
 
 
 class AntColonyOptimization:
