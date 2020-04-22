@@ -57,13 +57,16 @@ class AntColonyOptimization:
 
     def generate_solutions(self):
         self.anthill.reset_ants()
-        vertex_lst = list(graph.vertices.keys())
-        vertex_lst.remove(graph.start)
+        vertex_lst = list(self.graph.vertices.keys())
+        vertex_lst.remove(self.graph.start)
         for ant in self.anthill.ants:
             unvisited_vertex_lst = vertex_lst.copy()
             ant.path.append(self.graph.start)
             curr_vertex = self.graph.start
             while True:
+                if curr_vertex == self.graph.end:
+                    ant.has_found = True
+                    break
                 prev_vertex = curr_vertex
                 available_vertices = {k: v for k, v in self.graph.vertices[curr_vertex].neighbours.items() if
                                       k in unvisited_vertex_lst}
@@ -74,9 +77,6 @@ class AntColonyOptimization:
                 ant.path.append(curr_vertex)
                 unvisited_vertex_lst.remove(curr_vertex)
                 ant.distance_traveled += self.graph.vertices[prev_vertex].neighbours[curr_vertex]["weight"]
-                if curr_vertex == self.graph.end:
-                    ant.has_found = True
-                    break
 
     def pick_vertex(self, neighbours: {}):
         tau = [[k, ((1 / v["weight"]) ** self.beta_param) * (v["pheromone"] ** self.alpha_param)] for k, v in
@@ -143,7 +143,7 @@ class AntColonyOptimization:
     #     return tau[i][0], vertex.id
 
     def single_pheromone_update(self, ant):
-        if ant.has_found:
+        if ant.has_found and ant.distance_traveled > 0.0:
             new_pheromone = self.q_param / ant.distance_traveled
             for i in range(len(ant.path) - 1):
                 self.graph.vertices[ant.path[i]].neighbours[ant.path[i + 1]]["pheromone"] += new_pheromone
@@ -170,11 +170,3 @@ class AntColonyOptimization:
             for ant in self.anthill.ants:
                 if ant.distance_traveled <= len_threshold:
                     self.single_pheromone_update(ant)
-
-
-graph = read_graph_from_file("../graphs/graph_example_2.txt")
-aco = AntColonyOptimization(graph=graph, ants_num=20, ls_flag=False)
-result = aco.run(100)
-d_res = dijkstra(graph, graph.start, graph.end)
-print(result[0], result[1])
-print("dijkstra: ", d_res)

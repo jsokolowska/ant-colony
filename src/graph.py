@@ -37,5 +37,8 @@ class Graph:
             string += "\n"
         return string
 
+    def __len__(self):
+        return len(self.vertices)
+
     def is_vertex(self, name: str):
         return name in self.vertices
