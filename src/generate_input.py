@@ -43,7 +43,8 @@ def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
     all_edges = [(all_vertices[a], all_vertices[b]) for a in range(vertex_num) for b in range(a + 1, vertex_num)]
     # choose end vertices
     start_vertex = all_vertices[randrange(0, vertex_num - 1)]
-    end_vertex = all_vertices[randrange(0, vertex_num - 1)]
+    all_vertices.remove(start_vertex)
+    end_vertex = all_vertices[randrange(0, vertex_num - 2)]
 
     chosen_edges = set()
     max_edges_num = len(all_edges)
@@ -54,11 +55,11 @@ def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
 
     while curr_vertex != end_vertex:
         path.append(curr_vertex)
-        all_vertices.remove(curr_vertex)
         next_vertex = all_vertices[randrange(0, len(all_vertices))]
         edge = (next_vertex, curr_vertex)
         if curr_vertex < next_vertex:
             edge = (curr_vertex, next_vertex)
+        all_vertices.remove(next_vertex)
         chosen_edges.add(edge)
         all_edges.remove(edge)
         # try:
@@ -89,7 +90,7 @@ def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
         weight = randrange(1, max_weight + 1)
         lines.append(" ".join([edge[0], edge[1], str(weight)]))
 
-    path = "../graphs/"
+    path = "graphs/"
     file_name = path + file_name
     with open(file_name, 'w') as file:
         # start_vertex = all_vertices[randrange(0, vertex_num - 1)]
@@ -98,6 +99,3 @@ def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
         # # end_vertex = chr(ord('a') + randrange(0, vertex_num - 1))
         lines.append(" ".join([start_vertex, end_vertex]))
         file.write("\n".join(lines))
-
-
-generate_input(100, 0.3)

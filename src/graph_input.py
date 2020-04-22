@@ -36,6 +36,7 @@ def read_graph_from_file(file_name):
             return graph_temp
     except FileNotFoundError:
         print("ERROR: File ", file_name, " not found.")
+        print("Current folder: " + str(Path.cwd()))
         return None
 
 

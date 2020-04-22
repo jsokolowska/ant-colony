@@ -4,6 +4,7 @@ from src.graph_input import read_graph_txt, read_graph_from_file
 from src.vertex import Vertex
 from random import uniform
 from src.path_search_algo import dijkstra
+from pathlib import Path
 
 
 class AntColonyOptimization:
