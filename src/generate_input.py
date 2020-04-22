@@ -198,7 +198,8 @@ def generate_with_bridges(vertex_num, probability, bridges_num, max_weight=20):
         lines.append(" ".join([edge[0], edge[1], str(weight)]))
 
     path = "../graphs/"
-    file_name = "auto_graph_" + str(vertex_num) + "_" + str(probability) + ".txt"
+    probability_str = "{:.4f}".format(probability)
+    file_name = "auto_graph_" + str(vertex_num) + "_" + probability_str + ".txt"
     file_name = path + file_name
     with open(file_name, 'w') as file:
         # start_vertex = all_vertices[randrange(0, vertex_num - 1)]
@@ -207,5 +208,3 @@ def generate_with_bridges(vertex_num, probability, bridges_num, max_weight=20):
         # # end_vertex = chr(ord('a') + randrange(0, vertex_num - 1))
         lines.append(" ".join([global_start, global_end]))
         file.write("\n".join(lines))
-
-#generate_with_bridges(200, 0.5, 15)
