@@ -7,7 +7,7 @@ from src.path_search_algo import dijkstra
 
 
 class AntColonyOptimization:
-    def __init__(self, *, anthill: Anthill = None, graph: Graph = None, q_param=1, ro_param=0.5, alpha_param=1,
+    def __init__(self, *, anthill: Anthill = None, graph: Graph = None, q_param=1, ro_param=0.1, alpha_param=1,
                  beta_param=1, ants_num=50, ls_flag=True, diff_percentage=0.5):
         if type(graph) is not Graph:
             self.graph = read_graph_txt()
@@ -38,59 +38,109 @@ class AntColonyOptimization:
                 self.local_search()
             else:
                 self.pheromone_update()
-            if i % 10 == 0:
-                print("Iteration nr: ", i)
-            best_ant = self.anthill.get_best_ant()
-            path = (best_ant.path, best_ant.distance_traveled)
-            print("Iteracja: ", i, " : ", path[1])
+            # print(self.graph)
+            # if i % 10 == 0:
+            #     print("Iteration nr: ", i)
+            # best_ant = self.anthill.get_best_ant()
+            # if best_ant is not None:
+            #     path = (best_ant.path, best_ant.distance_traveled)
+            #     print("Iteracja: ", i, " : ", path[1], " : ", path[0])
+            # else:
+            #     print("Iteracja: ", i)
 
         best_ant = self.anthill.get_best_ant()
-        path = (best_ant.path, best_ant.distance_traveled)
-        return path
+        if best_ant is not None:
+            path = (best_ant.path, best_ant.distance_traveled)
+            return path
+        else:
+            return None, None
 
     def generate_solutions(self):
         self.anthill.reset_ants()
+        vertex_lst = list(graph.vertices.keys())
+        vertex_lst.remove(graph.start)
         for ant in self.anthill.ants:
+            unvisited_vertex_lst = vertex_lst.copy()
             ant.path.append(self.graph.start)
-            prev_vertex = curr_vertex = self.graph.start
+            curr_vertex = self.graph.start
             while True:
-                curr_vertex, prev_vertex = self.pick_vertex(self.graph.vertices[curr_vertex],
-                                                            self.graph.vertices[prev_vertex])
-                if curr_vertex is None:
+                prev_vertex = curr_vertex
+                available_vertices = {k: v for k, v in self.graph.vertices[curr_vertex].neighbours.items() if
+                                      k in unvisited_vertex_lst}
+                curr_vertex = self.pick_vertex(available_vertices)
+                if curr_vertex is None or not len(available_vertices):
                     ant.has_found = False
                     break
                 ant.path.append(curr_vertex)
+                unvisited_vertex_lst.remove(curr_vertex)
                 ant.distance_traveled += self.graph.vertices[prev_vertex].neighbours[curr_vertex]["weight"]
                 if curr_vertex == self.graph.end:
                     ant.has_found = True
                     break
 
-    def pick_vertex(self, vertex: Vertex, prev_vert: Vertex):
+    def pick_vertex(self, neighbours: {}):
         tau = [[k, ((1 / v["weight"]) ** self.beta_param) * (v["pheromone"] ** self.alpha_param)] for k, v in
-               vertex.neighbours.items() if k != prev_vert.id]
+               neighbours.items()]
         if not len(tau):
-            if vertex.id != prev_vert.id:
-                return prev_vert.id, vertex.id
-            else:
-                return None, None
+            return None
         total = 0
         for val in tau:
             total += val[1]
         if total == 0.0:
-            tau = [[k, (1 / v["weight"])] for k, v in vertex.neighbours.items() if k != prev_vert.id]
+            tau = [[k, (1 / v["weight"])] for k, v in neighbours.items()]
             for val in tau:
                 total += val[1]
         for i in range(len(tau)):
             tau[i][1] /= total
         curr = 1.0
-        i = 0
+        i = -1
         rand_number = uniform(0, 1)
-        while i < len(tau) - 1:
-            curr -= tau[i][1]
-            if rand_number >= curr:
-                break
+        while i < len(tau) - 1 and rand_number < curr:
             i += 1
-        return tau[i][0], vertex.id
+            curr -= tau[i][1]
+        return tau[i][0]
+
+    # def generate_solutions(self):
+    #     self.anthill.reset_ants()
+    #     for ant in self.anthill.ants:
+    #         ant.path.append(self.graph.start)
+    #         prev_vertex = curr_vertex = self.graph.start
+    #         while True:
+    #             curr_vertex, prev_vertex = self.pick_vertex(self.graph.vertices[curr_vertex],
+    #                                                         self.graph.vertices[prev_vertex])
+    #             if curr_vertex is None:
+    #                 ant.has_found = False
+    #                 break
+    #             ant.path.append(curr_vertex)
+    #             ant.distance_traveled += self.graph.vertices[prev_vertex].neighbours[curr_vertex]["weight"]
+    #             if curr_vertex == self.graph.end:
+    #                 ant.has_found = True
+    #                 break
+
+    # def pick_vertex(self, vertex: Vertex, prev_vert: Vertex):
+    #     tau = [[k, ((1 / v["weight"]) ** self.beta_param) * (v["pheromone"] ** self.alpha_param)] for k, v in
+    #            vertex.neighbours.items() if k != prev_vert.id]
+    #     if not len(tau):
+    #         if vertex.id != prev_vert.id:
+    #             return prev_vert.id, vertex.id
+    #         else:
+    #             return None, None
+    #     total = 0
+    #     for val in tau:
+    #         total += val[1]
+    #     if total == 0.0:
+    #         tau = [[k, (1 / v["weight"])] for k, v in vertex.neighbours.items() if k != prev_vert.id]
+    #         for val in tau:
+    #             total += val[1]
+    #     for i in range(len(tau)):
+    #         tau[i][1] /= total
+    #     curr = 1.0
+    #     i = -1
+    #     rand_number = uniform(0, 1)
+    #     while i < len(tau) - 1 and rand_number < curr:
+    #         i += 1
+    #         curr -= tau[i][1]
+    #     return tau[i][0], vertex.id
 
     def single_pheromone_update(self, ant):
         if ant.has_found:
@@ -123,9 +173,8 @@ class AntColonyOptimization:
 
 
 graph = read_graph_from_file("../graphs/graph_example_2.txt")
-aco = AntColonyOptimization(graph=graph, ants_num=5, ls_flag=False)
-result = aco.run(40)
+aco = AntColonyOptimization(graph=graph, ants_num=20, ls_flag=False)
+result = aco.run(100)
 d_res = dijkstra(graph, graph.start, graph.end)
 print(result[0], result[1])
 print("dijkstra: ", d_res)
-
