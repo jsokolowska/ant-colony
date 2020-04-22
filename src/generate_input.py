@@ -12,6 +12,7 @@ from random import randrange
 def generate_input(vertex_num, probability, max_weight=20):
     filename = "auto_graph_" + str(vertex_num) + "_" + str(probability) + ".txt"
     generate_input_to_txt(vertex_num, probability, filename, max_weight)
+    return filename
 
 
 def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
@@ -42,8 +43,12 @@ def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
     all_vertices = sorted(all_vertices)
     all_edges = [(all_vertices[a], all_vertices[b]) for a in range(vertex_num) for b in range(a + 1, vertex_num)]
     # choose end vertices
-    start_vertex = all_vertices[randrange(0, vertex_num - 1)]
-    end_vertex = all_vertices[randrange(0, vertex_num - 1)]
+    i = randrange(0, vertex_num - 1)
+    start_vertex = all_vertices[i]
+    j = randrange(0, vertex_num - 2)
+    if j >= i:
+        j += 1
+    end_vertex = all_vertices[j]
 
     chosen_edges = set()
     max_edges_num = len(all_edges)
