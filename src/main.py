@@ -5,8 +5,8 @@ from src.graph_input import read_graph_from_file
 
 parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='''\
-Ant Colony Optimization for finding path in weighted graph
------------------------------------------------------------''')
+Ant Colony Optimization - finding shortest path in weighted graph
+------------------------------------------------------------------''')
 parser.add_argument('filepath', help="path to file with input graph")
 parser.add_argument('-ls', '--local_search', action='store_true', default=False,
                     help="enables local_search algorithm that will increase exploitation of local minima")
@@ -33,4 +33,5 @@ else:
     aco = AntColonyOptimization(graph=graph, ants_num=args.ants_num, q_param=args.q, ro_param=args.ro, ls_flag=args.local_search,
                                 diff_percentage=args.diff)
     path = aco.run(args.iterations)
-    print("Result: " + str(path))
+    print("Ścieżka:" + str(path[0]) + "\nKoszt: " + str(path[1]))
+
