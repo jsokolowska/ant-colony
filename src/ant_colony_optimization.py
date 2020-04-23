@@ -1,12 +1,14 @@
 from src.graph import Graph
 from src.anthill import Anthill
-from src.graph_input import read_graph_txt
+from src.graph_input import read_graph_txt, read_graph_from_file
+from src.vertex import Vertex
 from random import uniform
+from src.path_search_algo import dijkstra
 
 
 class AntColonyOptimization:
-    def __init__(self, *, anthill: Anthill = None, graph: Graph = None, q_param=1, ro_param=0.1, alpha_param=1,
-                 beta_param=1, ants_num=50, ls_flag=False, diff_percentage=0.5):
+    def __init__(self, *, anthill: Anthill = None, graph: Graph = None, q_param=1, ro_param=0.4, alpha_param=1,
+                 beta_param=1, ants_num=50, ls_flag=True, diff_percentage=0.5):
         if type(graph) is not Graph:
             self.graph = read_graph_txt()
         else:
@@ -29,23 +31,31 @@ class AntColonyOptimization:
             raise ValueError("Vertices not set up properly.")
         if iterations <= 0:
             raise ValueError("Number of iterations must be greater than 0")
-
-        for i in range(iterations):
+        i = 0
+        j = 0
+        curr_best_path_distance = 0
+        best_path_distance = 0
+        while i < iterations and j < 4:
+            best_path_distance = curr_best_path_distance
             self.generate_solutions()
             if self.ls_flag:
                 self.local_search()
             else:
                 self.pheromone_update()
-            # print(self.graph)
-            # if i % 10 == 0:
-            #     print("Iteration nr: ", i)
-            # best_ant = self.anthill.get_best_ant()
-            # if best_ant is not None:
-            #     path = (best_ant.path, best_ant.distance_traveled)
-            #     print("Iteracja: ", i, " : ", path[1], " : ", path[0])
-            # else:
-            #     print("Iteracja: ", i)
-
+            curr_best_path_distance = self.anthill.get_best_ant().distance_traveled
+            # print(curr_best_path_distance, best_path_distance)
+            # print(i and curr_best_path_distance >= best_path_distance)
+            if i and curr_best_path_distance >= best_path_distance:
+                j += 1
+                # self.alpha_param *= 1 - 1/best_path_distance
+                # self.beta_param *= 1 + 1/best_path_distance
+            else:
+                j = 0
+                # best_path_distance = curr_best_path_distance
+                # self.alpha_param = 1
+                # self.beta_param = 1
+            print(i, " ", j, " ", self.alpha_param, " ", self.beta_param, " ", curr_best_path_distance, best_path_distance)
+            i += 1
         best_ant = self.anthill.get_best_ant()
         if best_ant is not None:
             path = (best_ant.path, best_ant.distance_traveled)
@@ -97,48 +107,6 @@ class AntColonyOptimization:
             i += 1
             curr -= tau[i][1]
         return tau[i][0]
-
-    # def generate_solutions(self):
-    #     self.anthill.reset_ants()
-    #     for ant in self.anthill.ants:
-    #         ant.path.append(self.graph.start)
-    #         prev_vertex = curr_vertex = self.graph.start
-    #         while True:
-    #             curr_vertex, prev_vertex = self.pick_vertex(self.graph.vertices[curr_vertex],
-    #                                                         self.graph.vertices[prev_vertex])
-    #             if curr_vertex is None:
-    #                 ant.has_found = False
-    #                 break
-    #             ant.path.append(curr_vertex)
-    #             ant.distance_traveled += self.graph.vertices[prev_vertex].neighbours[curr_vertex]["weight"]
-    #             if curr_vertex == self.graph.end:
-    #                 ant.has_found = True
-    #                 break
-
-    # def pick_vertex(self, vertex: Vertex, prev_vert: Vertex):
-    #     tau = [[k, ((1 / v["weight"]) ** self.beta_param) * (v["pheromone"] ** self.alpha_param)] for k, v in
-    #            vertex.neighbours.items() if k != prev_vert.id]
-    #     if not len(tau):
-    #         if vertex.id != prev_vert.id:
-    #             return prev_vert.id, vertex.id
-    #         else:
-    #             return None, None
-    #     total = 0
-    #     for val in tau:
-    #         total += val[1]
-    #     if total == 0.0:
-    #         tau = [[k, (1 / v["weight"])] for k, v in vertex.neighbours.items() if k != prev_vert.id]
-    #         for val in tau:
-    #             total += val[1]
-    #     for i in range(len(tau)):
-    #         tau[i][1] /= total
-    #     curr = 1.0
-    #     i = -1
-    #     rand_number = uniform(0, 1)
-    #     while i < len(tau) - 1 and rand_number < curr:
-    #         i += 1
-    #         curr -= tau[i][1]
-    #     return tau[i][0], vertex.id
 
     def single_pheromone_update(self, ant):
         if ant.has_found and ant.distance_traveled > 0.0:
