@@ -81,7 +81,7 @@ def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
 
 
 def generate_with_bridges(vertex_num, probability, bridges_num, max_weight=20):
-    if vertex_num < 2 or probability < 0 or probability > 1 or bridges_num<1:
+    if vertex_num < 2 or probability < 0 or probability > 1 or bridges_num < 1:
         raise ValueError('Probability should be between 0 and 1, bridges_num greater than 1 while vertex_num must be at least 2')
     if max_weight < 1:
         raise ValueError("Argument max_weight must be at least 1.")
@@ -103,6 +103,7 @@ def generate_with_bridges(vertex_num, probability, bridges_num, max_weight=20):
             j += 1
             i += 1
 
+    probability_cpy = probability
     all_vertices = sorted(all_vertices)
     groups = []
     for bridge in range(bridges_num):
@@ -121,6 +122,7 @@ def generate_with_bridges(vertex_num, probability, bridges_num, max_weight=20):
     chosen_edges = set()
     bridges_path = [start_vertex]
     for i in range(len(groups)):
+        probability = probability_cpy
         group = groups[i]
         if len(group) == 0:
             print("Empty group " + str(i) + " out of " + str(bridges_num))
@@ -152,7 +154,7 @@ def generate_with_bridges(vertex_num, probability, bridges_num, max_weight=20):
 
         if i != len(groups)-1:
             start_vertex = groups[i+1][randrange(0, len(groups[i+1]))]
-
+    probability = probability_cpy
     global_end = end_vertex
     if len(bridges_path) > 1:
         for i in range(len(bridges_path)-1):
