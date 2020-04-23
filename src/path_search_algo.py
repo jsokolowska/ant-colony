@@ -78,50 +78,18 @@ def brute_force(graph: Graph) -> ([], int):
                     bf_recursion(visited[:], node, length_copy, paths)
         return paths
 
-    if type(graph.start) is not str or type(graph.end) is not str:
-        raise TypeError('Graph start and end must be strings')
-    else:
-        all_paths = bf_recursion([], graph.start, 0, [])
-        if all_paths is None or len(all_paths) == 0:
+    def choose_shortest_path(paths: [([], int)]) -> ([], int):
+        if paths is None or len(paths) == 0:
             return None
-        shortest = all_paths[0]
-        for path in all_paths:
+        shortest = paths[0]
+        for path in paths:
             if path[1] < shortest[1]:
                 shortest = path
         return shortest
 
-# def brute_force(graph: Graph) -> ([], int):
-#     if type(graph.start) is not str or type(graph.end) is not str:
-#         raise TypeError('Graph start and end must be strings')
-#     else:
-#         paths = bf_recursion(graph, [], graph.start, 0, [])
-#         return choose_shortest_path(paths)
-#
-#
-#
-#
-# def bf_recursion(graph: Graph, visited: [], current_id, length, paths: []) -> []:
-#     if current_id == graph.end:
-#         visited.append(current_id)
-#         paths.append((visited, length))
-#     else:
-#         visited.append(current_id)
-#         for node in graph.vertices[current_id].neighbours:
-#             if node not in visited:
-#                 length_copy = update_path_length(graph, current_id, node, length)
-#                 bf_recursion(graph, visited[:], node, length_copy, paths)
-#     return paths
-#
-#
-# def update_path_length(graph: Graph, vertex1_id, vertex2_id, length):
-#     return length + graph.vertices[vertex1_id].neighbours[vertex2_id]["weight"]
-#
-#
-# def choose_shortest_path(paths: [([], int)]) -> ([], int):
-#     if paths is None or len(paths) == 0:
-#         return None
-#     shortest = paths[0]
-#     for path in paths:
-#         if path[1] < shortest[1]:
-#             shortest = path
-#     return shortest
+    choose_shortest_path_fun = choose_shortest_path
+
+    if type(graph.start) is not str or type(graph.end) is not str:
+        raise TypeError('Graph start and end must be strings')
+    else:
+        return choose_shortest_path(bf_recursion([], graph.start, 0, []))

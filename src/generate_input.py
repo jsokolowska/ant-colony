@@ -105,4 +105,4 @@ def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
         file.write("\n".join(lines))
 
 
-generate_input(100, 0.3)
+# generate_input(100, 0.3)
