@@ -10,8 +10,9 @@ from random import randrange
 
 
 def generate_input(vertex_num, probability, max_weight=20):
-    file_name = "auto_graph_" + str(vertex_num) + "_" + str(probability) + ".txt"
-    generate_input_to_txt(vertex_num, probability, file_name, max_weight)
+    filename = "auto_graph_" + str(vertex_num) + "_" + str(probability) + ".txt"
+    generate_input_to_txt(vertex_num, probability, filename, max_weight)
+    return filename
 
 
 def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
@@ -90,7 +91,7 @@ def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
         weight = randrange(1, max_weight + 1)
         lines.append(" ".join([edge[0], edge[1], str(weight)]))
 
-    path = "graphs/"
+    path = "../graphs/"
     file_name = path + file_name
     with open(file_name, 'w') as file:
         # start_vertex = all_vertices[randrange(0, vertex_num - 1)]

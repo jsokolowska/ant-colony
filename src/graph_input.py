@@ -9,7 +9,12 @@ from pathlib import Path
 import random
 
 
-def read_graph_from_file(file_name):
+def read_graph(file_name: str):
+    path = "../graphs/"
+    return read_graph_from_file(path + file_name)
+
+
+def read_graph_from_file(file_name: str):
     try:
         with open(file_name) as graph_file:
             graph_temp = Graph()
@@ -56,4 +61,3 @@ def read_graph_txt(which_file="first", keyword_1="graph", keyword_2="example"):
         return read_graph_from_file(file_lst[random.randint(0, len(file_lst) - 1)])
     else:
         print("ERROR: Wrong read mode.")
-
