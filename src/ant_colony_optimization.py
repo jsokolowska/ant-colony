@@ -35,26 +35,30 @@ class AntColonyOptimization:
         j = 0
         curr_best_path_distance = 0
         best_path_distance = 0
-        while i < iterations and j < 4:
+        while i < iterations and j < 5:
             best_path_distance = curr_best_path_distance
             self.generate_solutions()
+            curr_best_path_distance = self.anthill.get_best_ant().distance_traveled
+            if i and curr_best_path_distance >= best_path_distance:
+                if curr_best_path_distance:
+                    j += 1
+                if best_path_distance > 0:
+                    self.alpha_param *= 1 + 1/best_path_distance
+                    self.beta_param *= 1 - 1/best_path_distance
+            else:
+                j = 0
+                # best_path_distance = curr_best_path_distance
+                if best_path_distance > 0:
+                    self.alpha_param *= 1 - 1 / best_path_distance
+                    self.beta_param *= 1 + 1 / best_path_distance
             if self.ls_flag:
                 self.local_search()
             else:
                 self.pheromone_update()
-            curr_best_path_distance = self.anthill.get_best_ant().distance_traveled
             # print(curr_best_path_distance, best_path_distance)
             # print(i and curr_best_path_distance >= best_path_distance)
-            if i and curr_best_path_distance >= best_path_distance:
-                j += 1
-                # self.alpha_param *= 1 - 1/best_path_distance
-                # self.beta_param *= 1 + 1/best_path_distance
-            else:
-                j = 0
-                # best_path_distance = curr_best_path_distance
-                # self.alpha_param = 1
-                # self.beta_param = 1
-            print(i, " ", j, " ", self.alpha_param, " ", self.beta_param, " ", curr_best_path_distance, best_path_distance)
+            print(i, " ", j, " ", self.alpha_param, " ", self.beta_param, " ", curr_best_path_distance,
+                  best_path_distance)
             i += 1
         best_ant = self.anthill.get_best_ant()
         if best_ant is not None:

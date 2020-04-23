@@ -21,21 +21,7 @@ def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
     if max_weight < 1:
         raise ValueError("Argument max_weight must be at least 1.")
 
-    all_vertices = []
-    max_letter_index = ord('z') - ord('a') + 1
-    i = 0
-    j = 0
-    while j < max_letter_index and i < vertex_num:
-        all_vertices.append(chr(ord("a") + j))
-        j += 1
-        i += 1
-
-    for k in range(vertex_num // max_letter_index):
-        j = 0
-        while j < max_letter_index and i < vertex_num:
-            all_vertices.append(all_vertices[k] + chr(ord("a") + j))
-            j += 1
-            i += 1
+    all_vertices = generate_graph_vertices_names(vertex_num)
 
     all_vertices = sorted(all_vertices)
     all_edges = [(all_vertices[a], all_vertices[b]) for a in range(vertex_num) for b in range(a + 1, vertex_num)]
@@ -81,37 +67,25 @@ def generate_input_to_txt(vertex_num, probability, file_name, max_weight=20):
 
 
 def generate_with_bridges(vertex_num, probability, bridges_num, max_weight=20):
-    if vertex_num < 2 or probability < 0 or probability > 1 or bridges_num<1:
-        raise ValueError('Probability should be between 0 and 1, bridges_num greater than 1 while vertex_num must be at least 2')
+    if vertex_num < 2 or probability < 0 or probability > 1 or bridges_num < 1:
+        raise ValueError(
+            'Probability should be between 0 and 1, bridges_num greater than 1 while vertex_num must be at least 2')
     if max_weight < 1:
         raise ValueError("Argument max_weight must be at least 1.")
-    if vertex_num < bridges_num*2:
+    if vertex_num < bridges_num * 2:
         raise ValueError("Not enough vertices for that many bridges")
-    all_vertices = []
-    max_letter_index = ord('z') - ord('a') + 1
-    i = 0
-    j = 0
-    while j < max_letter_index and i < vertex_num:
-        all_vertices.append(chr(ord("a") + j))
-        j += 1
-        i += 1
-
-    for k in range(vertex_num // max_letter_index):
-        j = 0
-        while j < max_letter_index and i < vertex_num:
-            all_vertices.append(all_vertices[k] + chr(ord("a") + j))
-            j += 1
-            i += 1
+    probability_str = "{:.4f}".format(probability)
+    all_vertices = generate_graph_vertices_names(vertex_num)
 
     all_vertices = sorted(all_vertices)
     groups = []
     for bridge in range(bridges_num):
         groups.append([])
-    gr_size = vertex_num//bridges_num
-    for i in range(bridges_num-1):
-        groups[i] = all_vertices[i*gr_size:(i+1)*gr_size]
+    gr_size = vertex_num // bridges_num
+    for i in range(bridges_num - 1):
+        groups[i] = all_vertices[i * gr_size:(i + 1) * gr_size]
 
-    groups[bridges_num-1] = all_vertices[(bridges_num-1) * gr_size:]
+    groups[bridges_num - 1] = all_vertices[(bridges_num - 1) * gr_size:]
 
     global_start = groups[0][randrange(0, len(groups[0]))]
     global_end = None
@@ -125,7 +99,7 @@ def generate_with_bridges(vertex_num, probability, bridges_num, max_weight=20):
         if len(group) == 0:
             print("Empty group " + str(i) + " out of " + str(bridges_num))
             continue
-        group_edges = [(group[a], group[b]) for a in range(len(group)) for b in range(a+1, len(group))]
+        group_edges = [(group[a], group[b]) for a in range(len(group)) for b in range(a + 1, len(group))]
         group.remove(start_vertex)
         end_vertex = group[randrange(0, len(group))]
         used_edges = 0
@@ -150,13 +124,13 @@ def generate_with_bridges(vertex_num, probability, bridges_num, max_weight=20):
                 if rand_num < probability:
                     chosen_edges.add(edge)
 
-        if i != len(groups)-1:
-            start_vertex = groups[i+1][randrange(0, len(groups[i+1]))]
+        if i != len(groups) - 1:
+            start_vertex = groups[i + 1][randrange(0, len(groups[i + 1]))]
 
     global_end = end_vertex
     if len(bridges_path) > 1:
-        for i in range(len(bridges_path)-1):
-            bridge = (bridges_path[i], bridges_path[i+1])
+        for i in range(len(bridges_path) - 1):
+            bridge = (bridges_path[i], bridges_path[i + 1])
             chosen_edges.add(bridge)
 
     lines = []
@@ -165,9 +139,28 @@ def generate_with_bridges(vertex_num, probability, bridges_num, max_weight=20):
         lines.append(" ".join([edge[0], edge[1], str(weight)]))
 
     path = "../graphs/"
-    probability_str = "{:.4f}".format(probability)
     file_name = "auto_graph_" + str(vertex_num) + "_" + probability_str + ".txt"
     file_name = path + file_name
     with open(file_name, 'w') as file:
         lines.append(" ".join([global_start, global_end]))
         file.write("\n".join(lines))
+    return file_name
+
+
+def generate_graph_vertices_names(vertex_num: int):
+    all_vertices = []
+    max_letter_index = ord('z') - ord('a') + 1
+    i = 0
+    j = 0
+    while j < max_letter_index and i < vertex_num:
+        all_vertices.append(chr(ord("a") + j))
+        j += 1
+        i += 1
+
+    for k in range(vertex_num // max_letter_index):
+        j = 0
+        while j < max_letter_index and i < vertex_num:
+            all_vertices.append(all_vertices[k] + chr(ord("a") + j))
+            j += 1
+            i += 1
+    return all_vertices

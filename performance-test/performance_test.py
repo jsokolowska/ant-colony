@@ -9,7 +9,7 @@ from src.graph_input import read_graph_from_file, read_graph
 from src.path_search_algo import dijkstra
 from src.path_search_algo import brute_force
 from src.ant_colony_optimization import AntColonyOptimization
-from src.generate_input import generate_input, generate_input_to_txt
+from src.generate_input import generate_input, generate_input_to_txt, generate_with_bridges
 from documentation.remove_auto_graphs import remove_auto_graphs
 import time
 # import matplotlib.pyplot as plt
@@ -19,24 +19,26 @@ import time
 # plt.plot(x, y, "r--")
 # plt.show()
 
-# # remove_auto_graphs()
-# name = generate_input(100, 0.05)
-# # name = "auto_graph_15_0.5.txt"
-# graph = read_graph(name)
-# # aco = AntColonyOptimization(graph=graph, ants_num=100, ls_flag=True)
-# # start_time = time.time()
-# # print(time.ctime())
-# # result = aco.run(1000)
-# # print("aco: ", result[1], result[0])
-# # print("--- %s seconds ---" % (time.time() - start_time))
-# start_time = time.time()
-# d_res = dijkstra(graph, graph.start, graph.end)
-# print("dijkstra: ", d_res[1], d_res[0])
-# print("--- %s seconds ---" % (time.time() - start_time))
-# # start_time = time.time()
-# # bf_res = brute_force(graph)
-# # print("bf: ", bf_res)
-# # print("--- %s seconds ---" % (time.time() - start_time))
+# remove_auto_graphs()
+name = generate_input(100, 0.05)
+# name = generate_with_bridges(100, 0.1, 10)
+# name = "auto_graph_100_0.0063.txt"
+# name = "auto_graph_100_0.05.txt"
+graph = read_graph(name)
+aco = AntColonyOptimization(graph=graph, ants_num=100, ls_flag=True)
+start_time = time.time()
+print(time.ctime())
+result = aco.run(1000)
+print("aco: ", result[1], result[0])
+print("--- %s seconds ---" % (time.time() - start_time))
+start_time = time.time()
+d_res = dijkstra(graph, graph.start, graph.end)
+print("dijkstra: ", d_res[1], d_res[0])
+print("--- %s seconds ---" % (time.time() - start_time))
+start_time = time.time()
+bf_res = brute_force(graph)
+print("bf: ", bf_res[1], bf_res[0])
+print("--- %s seconds ---" % (time.time() - start_time))
 
 iterations_per_test = 20
 iterations_per_graph_size = 3
@@ -55,4 +57,4 @@ ants_iterations = [10, 50, 100]
 #         print("bf: ", bf_res)
 #         print("--- %s seconds ---" % (time.time() - start_time))
 #
-remove_auto_graphs()
+# remove_auto_graphs()
