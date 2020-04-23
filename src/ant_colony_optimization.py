@@ -4,6 +4,7 @@ from src.graph_input import read_graph_txt, read_graph_from_file
 from src.vertex import Vertex
 from random import uniform
 from src.path_search_algo import dijkstra
+import copy
 
 
 class AntColonyOptimization:
@@ -35,10 +36,15 @@ class AntColonyOptimization:
         j = 0
         curr_best_path_distance = 0
         best_path_distance = 0
+        best_ant = Anthill.Ant()
+        best_ant.distance_traveled = 0
         while i < iterations and j < 5:
             best_path_distance = curr_best_path_distance
             self.generate_solutions()
-            curr_best_path_distance = self.anthill.get_best_ant().distance_traveled
+            curr_best_ant = self.anthill.get_best_ant()
+            if best_ant.distance_traveled > curr_best_ant.distance_traveled > 0 or best_ant.distance_traveled == 0:
+                best_ant = copy.deepcopy(curr_best_ant)
+            curr_best_path_distance = curr_best_ant.distance_traveled
             if i and curr_best_path_distance >= best_path_distance:
                 if curr_best_path_distance:
                     j += 1
@@ -57,10 +63,11 @@ class AntColonyOptimization:
                 self.pheromone_update()
             # print(curr_best_path_distance, best_path_distance)
             # print(i and curr_best_path_distance >= best_path_distance)
-            print(i, " ", j, " ", self.alpha_param, " ", self.beta_param, " ", curr_best_path_distance,
+            print(i, " ", j, " ", self.alpha_param, " ", self.beta_param, " ", best_ant.distance_traveled, " ", curr_best_path_distance,
                   best_path_distance)
             i += 1
-        best_ant = self.anthill.get_best_ant()
+        # print(best_ant.distance_traveled, " ", best_ant.path)
+        # best_ant = self.anthill.get_best_ant()
         if best_ant is not None:
             path = (best_ant.path, best_ant.distance_traveled)
             return path

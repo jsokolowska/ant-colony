@@ -20,10 +20,11 @@ import time
 # plt.show()
 
 # remove_auto_graphs()
-name = generate_input(100, 0.05)
-# name = generate_with_bridges(100, 0.1, 10)
+name = generate_input(500, 0.05)
+# name = generate_with_bridges(500, 0.3, 5)
 # name = "auto_graph_100_0.0063.txt"
 # name = "auto_graph_100_0.05.txt"
+# name = "auto_graph_100_0.1000.txt"
 graph = read_graph(name)
 aco = AntColonyOptimization(graph=graph, ants_num=100, ls_flag=True)
 start_time = time.time()
@@ -35,10 +36,10 @@ start_time = time.time()
 d_res = dijkstra(graph, graph.start, graph.end)
 print("dijkstra: ", d_res[1], d_res[0])
 print("--- %s seconds ---" % (time.time() - start_time))
-start_time = time.time()
-bf_res = brute_force(graph)
-print("bf: ", bf_res[1], bf_res[0])
-print("--- %s seconds ---" % (time.time() - start_time))
+# start_time = time.time()
+# bf_res = brute_force(graph)
+# print("bf: ", bf_res[1], bf_res[0])
+# print("--- %s seconds ---" % (time.time() - start_time))
 
 iterations_per_test = 20
 iterations_per_graph_size = 3
