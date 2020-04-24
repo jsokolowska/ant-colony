@@ -9,7 +9,7 @@ import copy
 
 class AntColonyOptimization:
     def __init__(self, *, anthill: Anthill = None, graph: Graph = None, q_param=1, ro_param=0.4, alpha_param=1,
-                 beta_param=1, ants_num=50, ls_flag=True, diff_percentage=0.5):
+                 beta_param=1, persistence_param=5, ants_num=50, ls_flag=True, diff_percentage=0.5):
         if type(graph) is not Graph:
             self.graph = read_graph_txt()
         else:
@@ -24,6 +24,7 @@ class AntColonyOptimization:
         self.beta_param = beta_param
         self.ls_flag = ls_flag
         self.diff_percentage = diff_percentage
+        self.persistence_param = persistence_param
 
     def run(self, iterations: int = 20) -> ([], int):
         if type(self.anthill) is not Anthill or type(self.graph) is not Graph:
@@ -38,7 +39,7 @@ class AntColonyOptimization:
         best_path_distance = 0
         best_ant = Anthill.Ant()
         best_ant.distance_traveled = 0
-        while i < iterations and j < 5:
+        while i < iterations and j < self.persistence_param - 1:
             best_path_distance = curr_best_path_distance
             self.generate_solutions()
             curr_best_ant = self.anthill.get_best_ant()
@@ -63,8 +64,8 @@ class AntColonyOptimization:
                 self.pheromone_update()
             # print(curr_best_path_distance, best_path_distance)
             # print(i and curr_best_path_distance >= best_path_distance)
-            print(i, " ", j, " ", self.alpha_param, " ", self.beta_param, " ", best_ant.distance_traveled, " ", curr_best_path_distance,
-                  best_path_distance)
+            # print(i, " ", j, " ", self.alpha_param, " ", self.beta_param, " ", best_ant.distance_traveled, " ", curr_best_path_distance,
+            #       best_path_distance)
             i += 1
         # print(best_ant.distance_traveled, " ", best_ant.path)
         # best_ant = self.anthill.get_best_ant()

@@ -87,8 +87,6 @@ def brute_force(graph: Graph) -> ([], int):
                 shortest = path
         return shortest
 
-    choose_shortest_path_fun = choose_shortest_path
-
     if type(graph.start) is not str or type(graph.end) is not str:
         raise TypeError('Graph start and end must be strings')
     else:
