@@ -64,10 +64,10 @@ def test_plot_time_graph_size():
         for k in tmp_results.keys():
             final_results[graph_size][k] = tmp_results[k] / counter[k]
 
-    for graph_size in range(graph_sizes[0], graph_sizes[1], graph_sizes[2]):
-        for ants_number in final_results[graph_size]:
-            print("Results:", " graph_size= ", graph_size, ", ants_number= ", ants_number, " : ",
-                  final_results[graph_size][ants_number])
+    # for graph_size in range(graph_sizes[0], graph_sizes[1], graph_sizes[2]):
+    #     for ants_number in final_results[graph_size]:
+    #         print("Results:", " graph_size= ", graph_size, ", ants_number= ", ants_number, " : ",
+    #               final_results[graph_size][ants_number])
 
     x = list(final_results.keys())
     y = [[], [], []]
@@ -110,7 +110,7 @@ def test_plot_diff_ants():
                 for j in range(iterations_per_test):
                     aco = AntColonyOptimization(graph=graph, ants_num=ant_number, ls_flag=True)
                     result = aco.run(1000)
-                    results[ant_number][i][g_size][j] = result[1] - d_res[1]
+                    results[ant_number][i][g_size][j] = result[1] / d_res[1]
 
     final_results = {}
     for ant_number in range(ants_numbers[0], ants_numbers[1], ants_numbers[2]):
@@ -132,25 +132,28 @@ def test_plot_diff_ants():
         for k in tmp_results.keys():
             final_results[ant_number][k] = tmp_results[k] / counter[k]
 
-    for ant_number in range(ants_numbers[0], ants_numbers[1], ants_numbers[2]):
-        for g_size in final_results[ant_number]:
-            print("Results:", " graph_size= ", g_size, ", ants_number= ", ant_number, " : ",
-                  final_results[ant_number][g_size])
+    # for ant_number in range(ants_numbers[0], ants_numbers[1], ants_numbers[2]):
+    #     for g_size in final_results[ant_number]:
+    #         print("Results:", " graph_size= ", g_size, ", ants_number= ", ant_number, " : ",
+    #               final_results[ant_number][g_size])
 
     x = list(final_results.keys())
-    y = [[], [], []]
+    # y = [[], [], []]
+    y = []
     for ant_number in final_results.keys():
-        y[0].append(final_results[ant_number][ant_number * 2])
-        y[1].append(final_results[ant_number][ant_number * 3])
-        y[2].append(final_results[ant_number][ant_number * 4])
-    plt.plot(x, y[0], "bo:", label="graph_size=ants_number*2")
-    plt.plot(x, y[1], "ro:", label="graph_size=ants_number*3")
-    plt.plot(x, y[2], "go:", label="graph_size=ants_number*4")
+        # y[0].append(final_results[ant_number][ant_number * 2])
+        # y[1].append(final_results[ant_number][ant_number * 3])
+        # y[2].append(final_results[ant_number][ant_number * 4])
+        y.append((final_results[ant_number][ant_number * 2]+final_results[ant_number][ant_number * 3]+final_results[ant_number][ant_number * 4])/3)
+    # plt.plot(x, y[0], "bo:", label="graph_size=ants_number*2")
+    # plt.plot(x, y[1], "ro:", label="graph_size=ants_number*3")
+    # plt.plot(x, y[2], "go:", label="graph_size=ants_number*4")
+    plt.plot(x, y, "go:")
     plt.xlabel("liczba mrowek")
     plt.xticks(x, x)
-    plt.ylabel("sredni odstep od dobrego wyniku")
+    plt.ylabel("stosunek dlugosci znalezionej drogi do najkrotszej drogi")
     plt.legend(loc='best', shadow=True, fontsize='small')
-    plt.title("Sredni odstep od dobrego wyniku w zaleznosci od rozmiaru mrowiska.")
+    plt.title("Sredni stosunek dlugosci znalezionej drogi do najkrotszej drogi w zaleznosci od rozmiaru mrowiska.")
     plt.show()
 
     remove_auto_graphs()
