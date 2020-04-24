@@ -76,13 +76,13 @@ class AntColonyTest(unittest.TestCase):
         self.ant_colony.local_search()
 
         self.assertEqual(graph.vertices["A"].neighbours["B"]["pheromone"], 0.25)
-        self.assertEqual(graph.vertices["A"].neighbours["D"]["pheromone"], 0.0)
+        self.assertEqual(graph.vertices["A"].neighbours["D"]["pheromone"], 0.125)
         self.assertEqual(graph.vertices["A"].neighbours["C"]["pheromone"], 0.5)
         self.assertEqual(graph.vertices["B"].neighbours["A"]["pheromone"], 0.25)
         self.assertEqual(graph.vertices["B"].neighbours["D"]["pheromone"], 0.25)
         self.assertEqual(graph.vertices["C"].neighbours["A"]["pheromone"], 0.5)
         self.assertEqual(graph.vertices["C"].neighbours["D"]["pheromone"], 0.5)
-        self.assertEqual(graph.vertices["D"].neighbours["A"]["pheromone"], 0.0)
+        self.assertEqual(graph.vertices["D"].neighbours["A"]["pheromone"], 0.125)
         self.assertEqual(graph.vertices["D"].neighbours["B"]["pheromone"], 0.25)
         self.assertEqual(graph.vertices["D"].neighbours["C"]["pheromone"], 0.5)
 

@@ -1,15 +1,19 @@
+"""
+    Created by: Rafal Uzarowicz, Joanna Sokolowska
+    Date of creation: 19.04.2020
+    Github: https://github.com/RafalUzarowicz https://github.com/jsokolowska
+"""
+
 from src.graph import Graph
 from src.anthill import Anthill
-from src.graph_input import read_graph_txt, read_graph_from_file
-from src.vertex import Vertex
+from src.graph_input import read_graph_txt
 from random import uniform
-from src.path_search_algo import dijkstra
 import copy
 
 
 class AntColonyOptimization:
     def __init__(self, *, anthill: Anthill = None, graph: Graph = None, q_param=1, ro_param=0.4, alpha_param=1,
-                 beta_param=1, persistence_param=5, ants_num=50, ls_flag=True, diff_percentage=0.5):
+                 beta_param=1, persistence_param=5, ants_num=50, ls_flag=True, diff_percentage=0.3):
         if type(graph) is not Graph:
             self.graph = read_graph_txt()
         else:
@@ -26,35 +30,34 @@ class AntColonyOptimization:
         self.diff_percentage = diff_percentage
         self.persistence_param = persistence_param
 
-    def run(self, iterations: int = 20) -> ([], int):
+    def run(self, iterations_limit: int = 1000) -> ([], int):
         if type(self.anthill) is not Anthill or type(self.graph) is not Graph:
             raise TypeError("Graph or anthill have wrong types.")
         if len(self.graph.vertices) <= 0 or self.graph.start is None or self.graph.end is None:
             raise ValueError("Vertices not set up properly.")
-        if iterations <= 0:
+        if iterations_limit <= 0:
             raise ValueError("Number of iterations must be greater than 0")
-        i = 0
-        j = 0
+        all_iterations_counter = 0
+        worse_repeat_limit_counter = 0
         curr_best_path_distance = 0
         best_path_distance = 0
         best_ant = Anthill.Ant()
         best_ant.distance_traveled = 0
-        while i < iterations and j < self.persistence_param - 1:
+        while all_iterations_counter < iterations_limit and worse_repeat_limit_counter < self.persistence_param - 1:
             best_path_distance = curr_best_path_distance
             self.generate_solutions()
             curr_best_ant = self.anthill.get_best_ant()
             if best_ant.distance_traveled > curr_best_ant.distance_traveled > 0 or best_ant.distance_traveled == 0:
                 best_ant = copy.deepcopy(curr_best_ant)
             curr_best_path_distance = curr_best_ant.distance_traveled
-            if i and curr_best_path_distance >= best_path_distance:
+            if all_iterations_counter and curr_best_path_distance >= best_path_distance:
                 if curr_best_path_distance:
-                    j += 1
+                    worse_repeat_limit_counter += 1
                 if best_path_distance > 0:
                     self.alpha_param *= 1 + 1/best_path_distance
                     self.beta_param *= 1 - 1/best_path_distance
             else:
-                j = 0
-                # best_path_distance = curr_best_path_distance
+                worse_repeat_limit_counter = 0
                 if best_path_distance > 0:
                     self.alpha_param *= 1 - 1 / best_path_distance
                     self.beta_param *= 1 + 1 / best_path_distance
@@ -62,13 +65,7 @@ class AntColonyOptimization:
                 self.local_search()
             else:
                 self.pheromone_update()
-            # print(curr_best_path_distance, best_path_distance)
-            # print(i and curr_best_path_distance >= best_path_distance)
-            # print(i, " ", j, " ", self.alpha_param, " ", self.beta_param, " ", best_ant.distance_traveled, " ", curr_best_path_distance,
-            #       best_path_distance)
-            i += 1
-        # print(best_ant.distance_traveled, " ", best_ant.path)
-        # best_ant = self.anthill.get_best_ant()
+            all_iterations_counter += 1
         if best_ant is not None:
             path = (best_ant.path, best_ant.distance_traveled)
             return path

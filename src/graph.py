@@ -1,3 +1,8 @@
+"""
+    Created by: Joanna Sokołowska
+    Date of creation: 25.03.2020
+    Github: https://github.com/jsokolowska
+"""
 from src.vertex import Vertex
 
 

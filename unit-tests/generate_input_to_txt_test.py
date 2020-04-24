@@ -1,6 +1,6 @@
 import unittest
 from os.path import isfile
-from src.generate_input import generate_input
+from src.generate_input import generate_input_to_txt
 
 
 class GenerateInputTest(unittest.TestCase):
@@ -10,12 +10,12 @@ class GenerateInputTest(unittest.TestCase):
         vertices = 20
         density = 0.7
 
-        generate_input(vertices, density, filename)
+        generate_input_to_txt(vertices, density, filename)
 
         self.assertTrue(isfile(filepath))
-        self.assertRaises(ValueError, generate_input, -10, 0.5)
-        self.assertRaises(ValueError, generate_input, 10, -1)
-        self.assertRaises(ValueError, generate_input, 10, 2)
+        self.assertRaises(ValueError, generate_input_to_txt, -10, 0.5, filename)
+        self.assertRaises(ValueError, generate_input_to_txt, 10, -1, filename)
+        self.assertRaises(ValueError, generate_input_to_txt, 10, 2, filename)
 
 
 if __name__ == '__main__':

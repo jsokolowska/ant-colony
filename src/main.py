@@ -1,3 +1,8 @@
+"""
+    Created by: Joanna Sokołowska
+    Date of creation: 22.04.2020
+    Github: https://github.com/jsokolowska
+"""
 import argparse
 from pathlib import Path
 from src.ant_colony_optimization import AntColonyOptimization

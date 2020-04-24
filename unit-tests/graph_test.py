@@ -8,8 +8,8 @@ class graphTest(unittest.TestCase):
         graph.add_vertex("A")
         graph.add_vertex("B")
         graph.add_edge("A", "B", 40)
-        self.assertDictEqual(graph.vertices["A"].neighbours, {"B": {'weight': 40, 'pheromone': 0.0}})
-        self.assertDictEqual(graph.vertices["B"].neighbours, {"A": {'weight': 40, 'pheromone': 0.0}})
+        self.assertDictEqual(graph.vertices["A"].neighbours, {"B": {'weight': 40, 'pheromone': 1.0}})
+        self.assertDictEqual(graph.vertices["B"].neighbours, {"A": {'weight': 40, 'pheromone': 1.0}})
         self.assertRaises(ValueError, graph.add_edge, "A", "B", -40)
 
 

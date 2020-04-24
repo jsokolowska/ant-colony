@@ -65,7 +65,9 @@ def dijkstra(graph: Graph, start_point, end_point) -> []:
 
 
 def brute_force(graph: Graph) -> ([], int):
-    def bf_recursion(visited: [], current_id, length, paths: []) -> []:
+    paths = []
+
+    def bf_recursion(visited: [], current_id, length) -> []:
         if current_id == graph.end:
             visited.append(current_id)
             paths.append((visited, length))
@@ -73,12 +75,10 @@ def brute_force(graph: Graph) -> ([], int):
             visited.append(current_id)
             for node in graph.vertices[current_id].neighbours:
                 if node not in visited:
-                    # length_copy = update_path_length(graph, current_id, node, length)
                     length_copy = length + graph.vertices[current_id].neighbours[node]["weight"]
-                    bf_recursion(visited[:], node, length_copy, paths)
-        return paths
+                    bf_recursion(visited[:], node, length_copy)
 
-    def choose_shortest_path(paths: [([], int)]) -> ([], int):
+    def choose_shortest_path() -> ([], int):
         if paths is None or len(paths) == 0:
             return None
         shortest = paths[0]
@@ -87,7 +87,8 @@ def brute_force(graph: Graph) -> ([], int):
                 shortest = path
         return shortest
 
+    bf_recursion([], graph.start, 0)
     if type(graph.start) is not str or type(graph.end) is not str:
         raise TypeError('Graph start and end must be strings')
     else:
-        return choose_shortest_path(bf_recursion([], graph.start, 0, []))
+        return choose_shortest_path()

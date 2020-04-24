@@ -46,15 +46,10 @@ class Anthill:
         if i < len(self.ants):
             best_ant = self.ants[i]
         else:
-            return self.Ant()
+            return Anthill.Ant()
         for j in range(i, len(self.ants)):
-            if best_ant.distance_traveled > self.ants[i].distance_traveled and self.ants[i].has_found:
-                best_ant = self.ants[i]
-        # for ant in self.ants:
-        #     if ant.has_found:
-        #         print("best ", ant.path)
-        #     if best_ant.distance_traveled > ant.distance_traveled and ant.has_found:
-        #         best_ant = ant
+            if best_ant.distance_traveled > self.ants[j].distance_traveled and self.ants[i].has_found:
+                best_ant = self.ants[j]
         return best_ant
 
     def get_worst_ant(self):
@@ -67,16 +62,8 @@ class Anthill:
         if i < len(self.ants):
             worst_ant = self.ants[i]
         else:
-            return self.Ant()
+            return Anthill.Ant()
         for j in range(i, len(self.ants)):
-            if worst_ant.distance_traveled < self.ants[i].distance_traveled and self.ants[i].has_found:
-                worst_ant = self.ants[i]
+            if worst_ant.distance_traveled < self.ants[j].distance_traveled and self.ants[j].has_found:
+                worst_ant = self.ants[j]
         return worst_ant
-        # worst_ant = self.ants[0]
-        # for ant in self.ants:
-        #     if worst_ant.distance_traveled < ant.distance_traveled and ant.has_found:
-        #         worst_ant = ant
-        # if worst_ant.has_found:
-        #     return worst_ant
-        # else:
-        #     return None

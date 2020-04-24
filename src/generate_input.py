@@ -1,7 +1,6 @@
 """
     Created by: Joanna Sokołowska
-    Date of creation: 30.03.2020
-    Date of last modification: 14.04.2020
+    Date of creation: 08.04.2020
     Github: https://github.com/jsokolowska
 """
 
@@ -11,7 +10,7 @@ from random import randrange
 
 def generate_input(vertex_num, probability, max_weight=20):
     filename = "auto_graph_" + str(vertex_num) + "_" + str(probability) + ".txt"
-    generate_input_to_txt(vertex_num, probability, filename, max_weight)
+    generate_input_to_txt(vertex_num=vertex_num, probability=probability, file_name=filename, max_weight=max_weight)
     return filename
 
 

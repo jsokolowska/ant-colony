@@ -7,6 +7,7 @@ class AnthillTest(unittest.TestCase):
         anthill = Anthill(10)
         for i in range(10):
             anthill.ants[i].distance_traveled = i**2
+            anthill.ants[i].has_found = True
 
         best_ant = anthill.get_best_ant()
         self.assertEqual(best_ant.distance_traveled, 0)
@@ -18,6 +19,7 @@ class AnthillTest(unittest.TestCase):
         anthill = Anthill(10)
         for i in range(10):
             anthill.ants[i].distance_traveled = i ** 2
+            anthill.ants[i].has_found = True
 
         worst_ant = anthill.get_worst_ant()
         self.assertEqual(worst_ant.distance_traveled, 81)
