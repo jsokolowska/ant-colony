@@ -18,7 +18,7 @@ parser.add_argument('-ls', '--local_search', action='store_true', default=False,
 parser.add_argument('-diff', action='store', type=float, default=0.5,
                     help="works only if local search is enabled, only the solutions worse than "
                          "the best solution by no more than given percent will be used for pheromone update, "
-                         "must be between 0 and 1.")
+                         "must be between 0 and 1")
 parser.add_argument('-q', action='store', type=float, default=1,
                     help="single ant pheromone multiplier.")
 parser.add_argument('-ro', action='store', type=float, default=0.1,
@@ -28,9 +28,9 @@ parser.add_argument('-ro', action='store', type=float, default=0.1,
 parser.add_argument('-a', '--ants_num', action='store', type=int, default=50,
                     help="number of ants used to generate solutions")
 parser.add_argument('-i', '--iterations', action='store', type=int, default=1000,
-                    help='max number of algorithm iterations.')
+                    help='max number of algorithm iterations')
 parser.add_argument('-p', '--persistence', action='store', type=int, default=5,
-                    help='after how many iterations with no improvement to the best found path will calculations stop.')
+                    help='after how many iterations with no improvement to the best found path will calculations stop')
 args = parser.parse_args()
 
 if not Path(args.filepath).is_file():
